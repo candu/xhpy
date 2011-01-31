@@ -1,8 +1,8 @@
 '''this is a one-line docstring'''
 x = 42
-#x = 3, 4
+x = 3, 4
 False or not True and False or True
-#this_is_a_variable_name = (1+2*(3-4)//6), False or not True and False or True
+this_is_a_variable_name = (1+2*(3-4)//6), False or not True and False or True
 a = b
 a = test + <div class="test">{{1:2, 3:4}}<a href={link_url}>test {link_title + "test"} test</a>{test < 42}</div>
 if a == b:

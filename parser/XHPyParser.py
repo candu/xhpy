@@ -14,7 +14,6 @@ from xhpy.utils import tag2class
 from cStringIO import StringIO
 import tokenize
 
-# TODO: support exprlists (e.g. x = 3, 4)
 # TODO: support comment tokens inside xhpy_text (e.g. &#187;)
 
 # parser state
@@ -49,7 +48,7 @@ def advance(id=None):
     raise SyntaxError("Expected %r" % id)
   token = next()
 
-def expression(rbp=0):
+def single_expression(rbp=0):
   global token
   u = token
   yield token.type, token.value
@@ -61,6 +60,15 @@ def expression(rbp=0):
     yield token.type, token.value
     token = next()
     for t in u.led():
+      yield t
+
+def expression():
+  for t in single_expression():
+    yield t
+  while token.id == ',':
+    yield token.type, token.value
+    advance(',')
+    for t in single_expression():
       yield t
 
 def statement():
@@ -427,19 +435,19 @@ def symbol(id, bp=0):
 
 def infix(id, bp):
   def led(self):
-    for t in expression(bp):
+    for t in single_expression(bp):
       yield t
   symbol(id, bp).led = led
 
 def prefix(id, bp):
   def nud(self):
-    for t in expression(bp):
+    for t in single_expression(bp):
       yield t
   symbol(id).nud = nud
 
 def infix_r(id, bp):
   def led(self):
-    for t in expression(bp-1):
+    for t in single_expression(bp-1):
       yield t
   symbol(id, bp).led = led
 
@@ -454,7 +462,7 @@ infix_r("=", 10)
 infix_r("+=", 10); infix_r("-=", 10)
 infix_r("*=", 10); infix_r("**=", 10)
 infix_r("/=", 10); infix_r("%=", 10); infix_r("//=", 10)
-infix_r("&=", 10); infix_r("|=", 10); infix("^=", 10)
+infix_r("&=", 10); infix_r("|=", 10); infix_r("^=", 10)
 infix_r(">>=", 10); infix_r("<<=", 10)
 
 symbol("if", 20) # ternary form
@@ -646,29 +654,17 @@ def xhpy_text():
 
 @method(symbol('('))
 def led(self):
-  while True:
-    if token.id == ')':
-      break
+  if token.id != ')':
     for t in expression():
       yield t
-    if token.id != ',':
-      break
-    yield token.type, token.value
-    advance(',')
   yield token.type, token.value
   advance(')')
 
 @method(symbol('('))
 def nud(self):
-  while True:
-    if token.id == ')':
-      break
+  if token.id != ')':
     for t in expression():
       yield t
-    if token.id != ',':
-      break
-    yield token.type, token.value
-    advance(',')
   if token.id == 'for':
     # generator comprehension
     for t in comprehension_clause():
@@ -763,15 +759,9 @@ def comprehension_clause():
 
 @method(symbol('['))
 def nud(self):
-  while True:
-    if token.id == ']':
-      break
+  if token.id != ']':
     for t in expression():
       yield t
-    if token.id != ',':
-      break
-    yield token.type, token.value
-    advance(',')
   if token.id == 'for':
     # list comprehension
     for t in comprehension_clause():
@@ -781,20 +771,17 @@ def nud(self):
 
 @method(symbol('{'))
 def nud(self):
-  if token.id != '}':
-    while True:
-      if token.id == '}':
-        break
-      for t in expression():
-        yield t
-      yield token.type, token.value
-      advance(':')
-      for t in expression():
-        yield t
-      if token.id != ',':
-        break
-      yield token.type, token.value
-      advance(',')
+  while token.id != '}':
+    for t in single_expression():
+      yield t
+    yield token.type, token.value
+    advance(':')
+    for t in single_expression():
+      yield t
+    if token.id != ',':
+      break
+    yield token.type, token.value
+    advance(',')
   yield token.type, token.value
   advance('}')
 
@@ -833,7 +820,7 @@ def led(self):
   yield token.type, token.value
   advance()
   self.id = 'not in'
-  for t in expression(60):
+  for t in single_expression(60):
     yield t
 
 @method(symbol('is'))
@@ -842,7 +829,7 @@ def led(self):
     yield token.type, token.value
     advance()
     self.id = 'is not'
-  for t in expression(60):
+  for t in single_expression(60):
     yield t
 
 @method(symbol('if'))
@@ -1115,14 +1102,14 @@ def std(self):
   if token.id == '>>':
     yield token.type, token.value
     advance('>>')
-    for t in expression():
+    for t in single_expression():
       yield t
     yield token.type, token.value
     advance(',')
   while True:
     if token.id == '(newline)':
       break
-    for t in expression():
+    for t in single_expression():
       yield t
     if token.id != ',':
       break
