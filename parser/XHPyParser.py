@@ -8,8 +8,8 @@ http://effbot.org/zone/simple-iterator-parser.htm
 http://javascript.crockford.com/tdop/tdop.html
 """
 
-from constants import *
-from utils import tag2class
+from xhpy.constants import *
+from xhpy.utils import tag2class
 
 from cStringIO import StringIO
 import tokenize

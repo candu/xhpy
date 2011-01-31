@@ -1,6 +1,7 @@
-from constants import *
+from xhpy.constants import *
+from xhpy.utils import htmlspecialchars, element2class
+
 from exception import *
-from utils import htmlspecialchars, element2class
 
 ENABLE_VALIDATION = True
 

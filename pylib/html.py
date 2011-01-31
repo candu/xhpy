@@ -5,7 +5,7 @@ operations.
 """
 
 from core import :x:base, :x:primitive
-from utils import get_probably_unique_id, htmlspecialchars
+from xhpy.utils import get_probably_unique_id, htmlspecialchars
 
 class :xhpy:html-element(:x:primitive):
   attribute
