@@ -1,0 +1,5 @@
+#!/bin/bash
+
+for FILE in *.py; do
+  python "$FILE"
+done

@@ -1,0 +1,95 @@
+#!/usr/bin/python
+
+import StringIO
+import sys
+import unittest
+
+import xhpy
+
+class XHPyFullTests(unittest.TestCase):
+
+  def _trapOutput(self, module):
+    ostdout = sys.stdout
+    ss = StringIO.StringIO()
+    sys.stdout = ss
+    __import__(module)
+    sys.stdout = ostdout
+    output = ss.getvalue()
+    ss.close()
+    return output
+
+  # TESTS
+
+  def testConstantInArray(self):
+    output = self._trapOutput('xhpy.tests.full.array_constant')
+    self.assertEquals(output, 'pass', 'Constant in Array')
+  def testAttrBlank(self):
+    output = self._trapOutput('xhpy.tests.full.attr_blank')
+    self.assertEquals(output, 'pass', 'Blank attribute')
+  def testAttrEntity(self):
+    output = self._trapOutput('xhpy.tests.full.attr_entity')
+    self.assertEquals(output, 'pass', 'Entities in attributes')
+  def testAttrFloat(self):
+    output = self._trapOutput('xhpy.tests.full.attr_float')
+    self.assertEquals(output, 'pass', 'Float attribute parsing')
+  def testAttributes(self):
+    output = self._trapOutput('xhpy.tests.full.attributes')
+    self.assertEquals(output, 'pass', 'XHPy attributes Declaration')
+  def testClassConstants(self):
+    output = self._trapOutput('xhpy.tests.full.class_constants')
+    self.assertEquals(output, '1 2', 'XHPy Class Attributes')
+  def testClass(self):
+    output = self._trapOutput('xhpy.tests.full.class')
+    self.assertEquals(output, 'pass', 'XHPy Classes')
+  def testDocstrings01(self):
+    output = self._trapOutput('xhpy.tests.full.docstrings_01')
+    self.assertEquals(output, 'b', 'Docstrings 01')
+  def testDocstrings02(self):
+    output = self._trapOutput('xhpy.tests.full.docstrings_02')
+    self.assertEquals(output, 'b', 'Docstrings 02')
+  def testDocstrings03(self):
+    output = self._trapOutput('xhpy.tests.full.docstrings_03')
+    self.assertEquals(output, 'c', 'Docstrings 03')
+  def testDocstrings05(self):
+    output = self._trapOutput('xhpy.tests.full.docstrings_05')
+    self.assertEquals(output, '', 'Docstrings 05')
+  def testLineno01(self):
+    output = self._trapOutput('xhpy.tests.full.lineno_01')
+    self.assertEquals(output, '7', 'Line Numbers 01')
+  def testLineno02(self):
+    output = self._trapOutput('xhpy.tests.full.lineno_02')
+    self.assertEquals(output, '3', 'Line Numbers 02')
+  def testLogicalOp(self):
+    output = self._trapOutput('xhpy.tests.full.logical_op')
+    self.assertEquals(output, 'True', 'Logical Operator Whitespace')
+  def testStackBalanceFail(self):
+    output = self._trapOutput('xhpy.tests.full.stack_balance_fail')
+    self.assertEquals(output, 'pass', 'Stack Balance Fail')
+  def testWhitespace01(self):
+    output = self._trapOutput('xhpy.tests.full.whitespace_01')
+    self.assertEquals(output, '<x><x></x>+ </x>', 'Whitespace 01')
+  def testWhitespace02(self):
+    output = self._trapOutput('xhpy.tests.full.whitespace_02')
+    self.assertEquals(output, '<x>a<x></x></x>', 'Whitespace 02')
+  def testWhitespace03(self):
+    output = self._trapOutput('xhpy.tests.full.whitespace_03')
+    self.assertEquals(output, '<x>a</x>', 'Whitespace 03')
+  def testWhitespace04(self):
+    output = self._trapOutput('xhpy.tests.full.whitespace_04')
+    self.assertEquals(output, '<x><x></x>a</x>', 'Whitespace 04')
+  def testWhitespace05(self):
+    output = self._trapOutput('xhpy.tests.full.whitespace_05')
+    self.assertEquals(output, '<x> foo </x>', 'Whitespace 05')
+  def testWhitespace06(self):
+    output = self._trapOutput('xhpy.tests.full.whitespace_06')
+    self.assertEquals(output, '<x> a b c </x>', 'Whitespace 06')
+  def testWhitespace07(self):
+    output = self._trapOutput('xhpy.tests.full.whitespace_07')
+    self.assertEquals(output, '<x> abc </x>', 'Whitespace 07')
+  def testXHPyFunctionParam(self):
+    output = self._trapOutput('xhpy.tests.full.xhpy_function_param')
+    self.assertEquals(output, 'pass', 'XHPy Function Call Param')
+
+if __name__ == '__main__':
+  unittest.main()
+

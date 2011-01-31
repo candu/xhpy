@@ -1,0 +1,3 @@
+*.pyc
+web/test/xhpy/tests/precompiled/pylib/
+web/test/xhpy/tests/precompiled/*.py

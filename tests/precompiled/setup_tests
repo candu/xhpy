@@ -1,0 +1,21 @@
+#!/bin/bash
+
+cd $(dirname $0)
+mkdir -p pylib
+
+# Copy over dependent files, etc.
+cp ../../pylib/*.py pylib
+
+# Generate the core libraries, move back over source files.
+for FILE in pylib/*.py; do
+  echo "generating core library: $FILE..."
+  python ../../parser/XHPyParser.py < "$FILE" > "${FILE%%.py}.xhpy"
+  mv "${FILE%%.py}.xhpy" "$FILE"
+done
+
+# Generate tests.
+for FILE_IN in tests/*.py.in; do
+  FILE_OUT=$(basename ${FILE_IN%%.in})
+  echo "generating tests: $FILE_OUT"
+  python ../../parser/XHPyParser.py < "$FILE_IN" > "$FILE_OUT"
+done
