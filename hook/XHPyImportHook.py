@@ -1,6 +1,6 @@
 import imp
 import sys
-from xhpy.parser.XHPyParser import XHPyParser
+from xhpy.parser.XHPyParser import parse
 
 # TODO: this should really be implemented as an import hook, and not as a full
 # override of __import__ - I have no idea what most of this is doing, and it's
@@ -9,13 +9,14 @@ from xhpy.parser.XHPyParser import XHPyParser
 def xhpy_load_transformed_module(name, fp, pathname, description):
   mod = imp.new_module(name)
   sys.modules[name] = mod
+  # TODO: fill these in
   """
   mod.__file__ = ''
   mod.__path__ = []
   """
   try:
     xhpy_code = fp.read()
-    py_code = XHPyParser().parse(xhpy_code)
+    py_code = parse(xhpy_code)
   
     exec py_code in mod.__dict__
     return mod
