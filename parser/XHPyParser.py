@@ -1,11 +1,14 @@
 """
 XHPy parser. We lean on tokenizer to split XHPy input into tokens, then use a
-combination of recursive descent and Pratt operator precedence to build the
-syntax tree. For more details, see:
+combination of recursive descent and Pratt operator precedence to perform
+parsing. For more details, see:
 
 http://effbot.org/zone/simple-top-down-parsing.htm
 http://effbot.org/zone/simple-iterator-parser.htm
 http://javascript.crockford.com/tdop/tdop.html
+
+The parser then spits out a stream of modified tokens, which is fed to
+tokenize.untokenize to produce Python output.
 """
 
 from xhpy.constants import *

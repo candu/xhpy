@@ -1,5 +1,4 @@
 from xhpy.pylib import *
-
 class :ui:foo(:x:element):
   attribute list bar
   category %flow
@@ -8,19 +7,4 @@ class :ui:foo(:x:element):
     for b in self.getAttribute('bar'):
       a.appendChild(<li>{b}</li>)
     return a
-
-print\
-<div>
-  test
-  <ui:foo bar={range(10)} />
-  {"test"}
-</div>
-
-select = <select />
-d = { 'US' : 'United States', 'CA' : 'Canada' }
-for k in d:
-  select.appendChild(<option value={k}>{d[k]}</option>)
-print select
-
-t = <tr><td /></tr>
-print t
+print <div class="baz"><ui:foo bar={range(3)} /></div>

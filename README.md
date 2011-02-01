@@ -38,7 +38,7 @@ In foo.py:
 We can now run bar.py as a normal Python script:
 
     $ python bar.py
-    <div class="baz"><ul><li>1</li><li>2</li><li>3</li></ul></div>
+    <div class="baz"><ul><li>0</li><li>1</li><li>2</li></ul></div>
 
 Congratulations! You just wrote your first snippet of XHPy.
 
@@ -92,14 +92,21 @@ is where you put your UI logic.
         a.appendChild(<li>{b}</li>)
     return a
 
-As you probably noticed, `<ui:foo>` is a thin wrapper around `<ul>` that allows you to
-construct an unordered list out of a Python list. Standard HTML elements like
-`<ul>` and `<li>` are automatically rendered - except that, in XHPy, you can use Python
-expressions within tags, so that
+`<ui:foo>` is a thin wrapper around `<ul>` that allows you to construct an unordered
+list out of a Python list. Standard HTML elements like `<ul>` and `<li>` are automatically
+rendered - except that, in XHPy, you can use Python expressions within tags, so that
 
     {b}
 
-is replaced by the value of b.
+is replaced by the value of b. Note the use of `getAttribute()` and `appendChild()`:
+
+    self.getAttribute('bar')
+
+fetches the value of attribute bar (in this case, `range(3)`), whereas
+
+    a.appendChild(<li>{b}</li>)
+
+adds `<li>{b}</li>` as a child of `a = <ul />`.
 
 XHPy is largely based off XHP; for more details on the latter, see the
 [XHP wiki](https://github.com/facebook/xhp/wiki/). The syntax has been adapted for
