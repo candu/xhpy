@@ -53,18 +53,18 @@ To actually use XHPy, however, you will probably want the core library:
 
     from xhpy.pylib import *
 
-Now you have access to all the standard HTML 4.0 elements, the :x:element base class
+Now you have access to all the standard HTML 4.0 elements, the `:x:element` base class
 (this is what you build custom components on top of!), and some utilities.
 
     class :ui:foo(:x:element):
 
-Making new components is easy: just subclass :x:element. For your component class to be
-registered, it must start with : - this clearly distinguishes your components from
+Making new components is easy: just subclass `:x:element`. For your component class to be
+registered, it must start with `:` - this clearly distinguishes your components from
 ordinary Python classes.
 
     attribute list bar
 
-This is an attribute declaration, meaning that :ui:foo allows bar attributes on <ui:foo>
+This is an attribute declaration, meaning that `:ui:foo` allows bar attributes on `<ui:foo>`
 tags. Note the
 
     <ui:foo bar={range(3)} />
@@ -73,18 +73,18 @@ later on - like XHP, XHPy uses XML attribute syntax.
 
     category %flow
 
-This is a category declaration - :ui:foo is part of the %flow category. Categories are
+This is a category declaration - `:ui:foo` is part of the `%flow` category. Categories are
 primarily useful as a way of identifying elements that are similar without using
-inheritance; for example, the <a> tag in pylib.html has
+inheritance; for example, the `<a>` tag in pylib.html has
 
     children (pcdata | %flow)*
 
-indicating that its children must either contain text or be of the %flow category. (So
-we can put <ui:foo> inside <a>!)
+indicating that its children must either contain text or be of the `%flow` category. (So
+we can put `<ui:foo>` inside `<a>`!)
 
     def render(self):    
 
-When you print an :x:element (or call __str__ on it), the render() method is invoked; this
+When you print an `:x:element` (or call `__str__` on it), the `render()` method is invoked; this
 is where you put your UI logic.
 
     a = <ul />
@@ -92,9 +92,9 @@ is where you put your UI logic.
         a.appendChild(<li>{b}</li>)
     return a
 
-As you probably noticed, <ui:foo> is a thin wrapper around <ul> that allows you to
+As you probably noticed, `<ui:foo>` is a thin wrapper around `<ul>` that allows you to
 construct an unordered list out of a Python list. Standard HTML elements like
-<ul> and <li> are automatically rendered - except that, in XHPy, you can use Python
+`<ul>` and `<li>` are automatically rendered - except that, in XHPy, you can use Python
 expressions within tags, so that
 
     {b}
@@ -126,7 +126,7 @@ are valid, whereas
         <a href={href}>
         </a>
 
-is not, as it introduces an extra dedent after </a>.
+is not, as it introduces an extra dedent after `</a>`.
 
 How it works
 ------------
