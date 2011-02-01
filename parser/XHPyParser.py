@@ -654,14 +654,19 @@ def xhpy_text():
 
 @method(symbol('('))
 def led(self):
+  global ignore_whitespace
+  ignore_whitespace.append(True)
   if token.id != ')':
     for t in expression():
       yield t
+  ignore_whitespace.pop()
   yield token.type, token.value
   advance(')')
 
 @method(symbol('('))
 def nud(self):
+  global ignore_whitespace
+  ignore_whitespace.append(True)
   if token.id != ')':
     for t in expression():
       yield t
@@ -669,6 +674,7 @@ def nud(self):
     # generator comprehension
     for t in comprehension_clause():
       yield t
+  ignore_whitespace.pop()
   yield token.type, token.value
   advance(')')
 
@@ -759,6 +765,8 @@ def comprehension_clause():
 
 @method(symbol('['))
 def nud(self):
+  global ignore_whitespace
+  ignore_whitespace.append(True)
   if token.id != ']':
     for t in expression():
       yield t
@@ -766,11 +774,14 @@ def nud(self):
     # list comprehension
     for t in comprehension_clause():
       yield t
+  ignore_whitespace.pop()
   yield token.type, token.value
   advance(']')
 
 @method(symbol('{'))
 def nud(self):
+  global ignore_whitespace
+  ignore_whitespace.append(True)
   while token.id != '}':
     for t in single_expression():
       yield t
@@ -783,6 +794,7 @@ def nud(self):
     yield token.type, token.value
     advance(',')
   yield token.type, token.value
+  ignore_whitespace.pop()
   advance('}')
 
 @method(symbol('if'))
@@ -1233,6 +1245,27 @@ def import_dotted_name():
     advance('.')
     yield token.type, token.value
     advance('(name)')
+
+@method(symbol('global'))
+def std(self):
+  for t in expression():
+    yield t
+  yield token.type, token.value
+  advance('(newline)')
+
+@method(symbol('exec'))
+def std(self):
+  for t in expression():
+    yield t
+  yield token.type, token.value
+  advance('(newline)')
+
+@method(symbol('assert'))
+def std(self):
+  for t in expression():
+    yield t
+  yield token.type, token.value
+  advance('(newline)')
 
 def argument_list():
   while True:

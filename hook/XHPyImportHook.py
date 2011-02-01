@@ -2,9 +2,7 @@ import imp
 import sys
 from xhpy.parser.XHPyParser import parse
 
-# TODO: this should really be implemented as an import hook, and not as a full
-# override of __import__ - I have no idea what most of this is doing, and it's
-# apparently not working :(
+# TODO: implement as PEP 302-style hook
 
 def xhpy_load_transformed_module(name, fp, pathname, description):
   mod = imp.new_module(name)
