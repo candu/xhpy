@@ -1,0 +1,5 @@
+#!/bin/bash
+
+endtoend/run_tests
+parser/run_tests
+precompiled/run_tests

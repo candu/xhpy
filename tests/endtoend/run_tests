@@ -1,0 +1,4 @@
+#!/bin/bash
+
+MYDIR=$(dirname $0)
+python $MYDIR/bar.py

@@ -4,4 +4,7 @@
 # outputs something reasonable.
 #
 #
-python ../../parser/XHPyParser.py < test.py
+MYDIR=$(dirname $0)
+for FILE in $MYDIR/*.py; do
+  python $MYDIR/../../parser/XHPyParser.py < "$FILE"
+done

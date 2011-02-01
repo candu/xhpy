@@ -1,5 +1,7 @@
 #!/bin/bash
 
-for FILE in *.py; do
+MYDIR=$(dirname $0)
+$MYDIR/setup_tests
+for FILE in $MYDIR/*.py; do
   python "$FILE"
 done
