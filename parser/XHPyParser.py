@@ -1289,26 +1289,33 @@ def tokenize_python(program):
     except KeyError:
       raise SyntaxError("Unexpected token %r" % (t,))
 
-def tokenize_xhpy(program):
+def tokenize_collapse_multiple_newlines(program):
   newline_token = None
-  for id, value, start, end, type in tokenize_python(program):
-    if ignore_whitespace[-1] and id in ['(newline)', '(indent)', '(dedent)']:
-      continue
-
+  for t in tokenize_ignore_whitespace(program):
     # collapse multiple newlines
-    if id == '(newline)':
+    if t.id == '(newline)':
       if newline_token is None:
         symbol = symbol_table['(newline)']
         newline_token = symbol()
-        newline_token.value = value
-        newline_token.start = start
-        newline_token.type = type
-      newline_token.end = end
+        newline_token.value = t.value
+        newline_token.start = t.start
+        newline_token.type = t.type
+      newline_token.end = t.end
       continue
     elif newline_token is not None:
       yield newline_token
       newline_token = None
       # fall through to allow output of next token
+    yield t
+
+def tokenize_ignore_whitespace(program):
+  for t in tokenize_xhpy(program):
+    if ignore_whitespace[-1] and t.id in ['(newline)', '(indent)', '(dedent)']:
+      continue
+    yield t
+
+def tokenize_xhpy(program):
+  for id, value, start, end, type in tokenize_python(program):
     if id == '(name)':
       # note tokenize reads 'if', 'else', etc. as names
       symbol = symbol_table.get(value)
@@ -1334,14 +1341,14 @@ def tokenize_xhpy(program):
 def rewrite(program, debug=False):
   global token, next
   if debug:
-    next_debug_helper = tokenize_xhpy(program).next
+    next_debug_helper = tokenize_collapse_multiple_newlines(program).next
     def next_debug():
       token = next_debug_helper()
       print token.id, token.value, token.start, token.end
       return token
     next = next_debug
   else:
-    next = tokenize_xhpy(program).next
+    next = tokenize_collapse_multiple_newlines(program).next
   token = next()
   # ignore leading whitespace, if any
   if token.id == '(newline)':
