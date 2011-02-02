@@ -1289,6 +1289,35 @@ def tokenize_python(program):
     except KeyError:
       raise SyntaxError("Unexpected token %r" % (t,))
 
+def tokenize_collapse_multiple_strings(program):
+  string_token = None
+  # string (newline) string => string string, BUT string (newline) (name) is
+  # unchanged - so we need to buffer (newline) until we know how to handle it
+  string_token_buffer = []
+  for t in tokenize_collapse_multiple_newlines(program):
+    if t.type == tokenize.STRING:
+      if string_token is None:
+        symbol = symbol_table['(literal)']
+        string_token = symbol()
+        string_token.value = ''
+        string_token.start = t.start
+        string_token.type = t.type
+      string_token.value += t.value
+      string_token.end = t.end
+      string_token_buffer = []
+      continue
+    elif string_token is not None:
+      if t.id in ['(newline)', '(indent)', '(dedent)']:
+        string_token_buffer.append(t)
+        continue
+      else:
+        yield string_token
+        for u in string_token_buffer:
+          yield u
+        string_token = None
+        string_token_buffer = []
+    yield t
+
 def tokenize_collapse_multiple_newlines(program):
   newline_token = None
   for t in tokenize_ignore_whitespace(program):
@@ -1341,14 +1370,14 @@ def tokenize_xhpy(program):
 def rewrite(program, debug=False):
   global token, next
   if debug:
-    next_debug_helper = tokenize_collapse_multiple_newlines(program).next
+    next_debug_helper = tokenize_collapse_multiple_strings(program).next
     def next_debug():
       token = next_debug_helper()
       print token.id, token.value, token.start, token.end
       return token
     next = next_debug
   else:
-    next = tokenize_collapse_multiple_newlines(program).next
+    next = tokenize_collapse_multiple_strings(program).next
   token = next()
   # ignore leading whitespace, if any
   if token.id == '(newline)':
