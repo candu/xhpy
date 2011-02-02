@@ -360,6 +360,8 @@ def xhpy_children_decl():
 def xhpy_block():
   global ignore_whitespace
   yield token.type, token.value
+  advance('(newline)')
+  yield token.type, token.value
   advance('(indent)')
   while True:
     if token.id == '(dedent)':
@@ -394,6 +396,14 @@ def xhpy_block():
         yield t
 
 def block():
+  if token.id != '(newline)':
+    for t in expression():
+      yield t
+    yield token.type, token.value
+    advance('(newline)')
+    return
+  yield token.type, token.value
+  advance('(newline)')
   yield token.type, token.value
   advance('(indent)')
   while True:
@@ -855,8 +865,6 @@ def std(self):
     yield t
   yield token.type, token.value
   advance(':')
-  yield token.type, token.value
-  advance('(newline)')
   for t in block():
     yield t
   while True:
@@ -868,8 +876,6 @@ def std(self):
       yield t
     yield token.type, token.value
     advance(':')
-    yield token.type, token.value
-    advance('(newline)')
     for t in block():
       yield t
   if token.id == 'else':
@@ -877,8 +883,6 @@ def std(self):
     advance('else')
     yield token.type, token.value
     advance(':')
-    yield token.type, token.value
-    advance('(newline)')
     for t in block():
       yield t
 
@@ -888,8 +892,6 @@ def std(self):
     yield t
   yield token.type, token.value
   advance(':')
-  yield token.type, token.value
-  advance('(newline)')
   for t in block():
     yield t
   if token.id == 'else':
@@ -897,8 +899,6 @@ def std(self):
     advance('else')
     yield token.type, token.value
     advance(':')
-    yield token.type, token.value
-    advance('(newline)')
     for t in block():
       yield t
 
@@ -908,8 +908,6 @@ def std(self):
     yield t
   yield token.type, token.value
   advance(':')
-  yield token.type, token.value
-  advance('(newline)')
   for t in block():
     yield t
   if token.id == 'else':
@@ -917,8 +915,6 @@ def std(self):
     advance('else')
     yield token.type, token.value
     advance(':')
-    yield token.type, token.value
-    advance('(newline)')
     for t in block():
       yield t
 
@@ -926,8 +922,6 @@ def std(self):
 def std(self):
   yield token.type, token.value
   advance(':')
-  yield token.type, token.value
-  advance('(newline)')
   for t in block():
     yield t
   while True:
@@ -939,8 +933,6 @@ def std(self):
       yield t
     yield token.type, token.value
     advance(':')
-    yield token.type, token.value
-    advance('(newline)')
     for t in block():
       yield t
   if token.id == 'finally':
@@ -948,8 +940,6 @@ def std(self):
     advance('finally')
     yield token.type, token.value
     advance(':')
-    yield token.type, token.value
-    advance('(newline)')
     for t in block():
       yield t
   if token.id == 'else':
@@ -957,8 +947,6 @@ def std(self):
     advance('else')
     yield token.type, token.value
     advance(':')
-    yield token.type, token.value
-    advance('(newline)')
     for t in block():
       yield t
 
@@ -972,8 +960,6 @@ def std(self):
     yield t
   yield token.type, token.value
   advance(':')
-  yield token.type, token.value
-  advance('(newline)')
   for t in block():
     yield t
 
@@ -1020,8 +1006,6 @@ def std(self):
   advance(')')
   yield token.type, token.value
   advance(':')
-  yield token.type, token.value
-  advance('(newline)')
   for t in block():
     yield t
 
@@ -1054,8 +1038,6 @@ def std(self):
     advance(')')
   yield token.type, token.value
   advance(':')
-  yield token.type, token.value
-  advance('(newline)')
   if in_xhpy_class[-1]:
     for t in xhpy_block():
       yield t
