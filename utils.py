@@ -14,7 +14,7 @@ def element2class(element):
   return 'xhpy_' + element[start:].replace(':', '__').replace('-', '_')
 
 def class2element(klass):
-  return klass[5:].replace('_', '-').replace('__', ':')
+  return klass[5:].replace('__', ':').replace('_', '-')
 
 def htmlspecialchars(s, ent_quotes=False):
   s = s.replace('&', '&amp;')\

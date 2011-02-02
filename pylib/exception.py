@@ -19,8 +19,8 @@ Exception in class `%s`
 class XHPyCoreRenderException(XHPyException):
   def __init__(self, that, rend):
     super(XHPyException, self).__init__("""\
-:x:element::render must reduce an object to an :x:primitive, but `%s` reduced into `%s`
-""" % (class2element(that.__class__), type(rend)))
+:x:element.render() must reduce an object to an :x:primitive, but `%s` reduced into `%s`
+""" % (class2element(that.__class__.__name__), type(rend)))
 
 class XHPyRenderArrayException(XHPyException):
   pass

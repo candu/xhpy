@@ -339,7 +339,7 @@ class :x:element(:x:composable-element):
       self._validator.validateChildren(that)
       that = that.render()
       while isinstance(that, :x:element):
-        self._validator.validatorChildren(that)
+        self._validator.validateChildren(that)
         that = that.render()
       if not isinstance(that, :x:composable-element):
         raise XHPyCoreRenderException(self, that)
