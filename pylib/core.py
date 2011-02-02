@@ -290,12 +290,10 @@ class :x:composable-element(:x:base):
     for ii in xrange(ln):
       child = self._children[ii]
       if isinstance(child, :x:element):
-        while True:
+        while isinstance(child, :x:element):
           if ENABLE_VALIDATION:
             self._validator.validateChildren(child)
           child = child.render()
-          if not isinstance(child, :x:element):
-            break
         if not isinstance(child, :x:primitive):
           raise XHPyCoreRenderException(self._children[ii], child)
         if isinstance(child, :x:frag):
@@ -339,13 +337,16 @@ class :x:element(:x:composable-element):
     that = self
     if ENABLE_VALIDATION:
       self._validator.validateChildren(that)
-    while True:
       that = that.render()
-      if not isinstance(that, :x:element):
-        if ENABLE_VALIDATION:
-          self._validator.validateChildren(that)
+      while isinstance(that, :x:element):
+        self._validator.validatorChildren(that)
+        that = that.render()
       if not isinstance(that, :x:composable-element):
-        raise XHPyCoreRenderException(this, that)
+        raise XHPyCoreRenderException(self, that)
+    else:
+      that = that.render()
+      while isinstance(that, :x:element):
+        that = that.render()
     return str(that)
 
 class :x:frag(:x:primitive):
