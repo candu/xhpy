@@ -1283,7 +1283,7 @@ def tokenize_python(program):
     try:
       if t_type == tokenize.COMMENT:
         continue
-      yield type_map[t_type], t_value, t_start, t_end, t_line, t_type
+      yield type_map[t_type], t_value, t_start, t_end, t_type
       if t_type == tokenize.ENDMARKER:
         break
     except KeyError:
@@ -1291,7 +1291,7 @@ def tokenize_python(program):
 
 def tokenize_xhpy(program):
   newline_token = None
-  for id, value, start, end, line, type in tokenize_python(program):
+  for id, value, start, end, type in tokenize_python(program):
     if ignore_whitespace[-1] and id in ['(newline)', '(indent)', '(dedent)']:
       continue
 
@@ -1302,10 +1302,8 @@ def tokenize_xhpy(program):
         newline_token = symbol()
         newline_token.value = value
         newline_token.start = start
-        newline_token.line = ''
         newline_token.type = type
       newline_token.end = end
-      newline_token.line += line
       continue
     elif newline_token is not None:
       yield newline_token
@@ -1330,7 +1328,6 @@ def tokenize_xhpy(program):
     s.value = value
     s.start = start
     s.end = end
-    s.line = line
     s.type = type
     yield s
 
