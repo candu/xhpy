@@ -1289,7 +1289,7 @@ def tokenize_python(program):
     except KeyError:
       raise SyntaxError("Unexpected token %r" % (t,))
 
-def tokenize_xhpy(program, debug=False):
+def tokenize_xhpy(program):
   newline_token = None
   for id, value, start, end, line, type in tokenize_python(program):
     if ignore_whitespace[-1] and id in ['(newline)', '(indent)', '(dedent)']:
@@ -1308,13 +1308,9 @@ def tokenize_xhpy(program, debug=False):
       newline_token.line += line
       continue
     elif newline_token is not None:
-      if debug:
-        print '(newline)', '\\n', newline_token.start, newline_token.end
       yield newline_token
       newline_token = None
       # fall through to allow output of next token
-    if debug:
-      print id, value, start, end
     if id == '(name)':
       # note tokenize reads 'if', 'else', etc. as names
       symbol = symbol_table.get(value)
@@ -1340,7 +1336,15 @@ def tokenize_xhpy(program, debug=False):
 
 def rewrite(program, debug=False):
   global token, next
-  next = tokenize_xhpy(program, debug).next
+  if debug:
+    next_debug_helper = tokenize_xhpy(program).next
+    def next_debug():
+      token = next_debug_helper()
+      print token.id, token.value, token.start, token.end
+      return token
+    next = next_debug
+  else:
+    next = tokenize_xhpy(program).next
   token = next()
   # ignore leading whitespace, if any
   if token.id == '(newline)':
