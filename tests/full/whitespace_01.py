@@ -1,4 +1,5 @@
-print <x>
-<x>
-</x>+
-</x>
+from xhpy.pylib import *
+print <a>
+<a>
+</a>+
+</a>

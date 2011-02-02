@@ -1,1 +1,2 @@
-print <x> a{ 'b' }c </x>
+from xhpy.pylib import *
+print <a> a{ 'b' }c </a>

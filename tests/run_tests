@@ -1,6 +1,5 @@
 #!/bin/bash
-
 endtoend/run_tests
+full/run_tests
 parser/run_tests
 precompiled/run_tests
-# TODO: get full tests working

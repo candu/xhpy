@@ -1,4 +1,4 @@
-import sys
+from xhpy.pylib import *
 'a'
 class foo:
 
@@ -7,5 +7,4 @@ class foo:
   def etc(self):
     pass
 print foo.__doc__
-sys.exit(0)
 <a />

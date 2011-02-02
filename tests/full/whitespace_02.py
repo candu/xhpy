@@ -1,1 +1,2 @@
-print <x> {'a'}<x /></x>
+from xhpy.pylib import *
+print <a> {'a'}<a /></a>

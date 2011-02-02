@@ -1,1 +1,2 @@
-print <x> <x /> {'a'} </x>
+from xhpy.pylib import *
+print <a> <a /> {'a'} </a>
