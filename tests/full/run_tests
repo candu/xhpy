@@ -4,10 +4,8 @@ import xhpy.init; print '[xhpy.init] DONE'
 import array_constant; print '[array_constant] DONE'
 import attr_blank; print '[attr_blank] DONE'
 import attr_entity; print '[attr_entity] DONE'
-# TODO: fix newline error
-#import attr_float; print '[attr_float] DONE'
-# TODO: fix parsing error
-#import attributes; print '[attributes] DONE'
+import attr_float; print '[attr_float] DONE'
+import attributes; print '[attributes] DONE'
 import class_constants; print '[class_constants] DONE'
 import docstrings_01; print '[docstrings_01] DONE'
 import docstrings_02; print '[docstrings_02] DONE'

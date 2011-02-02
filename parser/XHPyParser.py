@@ -165,7 +165,9 @@ def xhpy_attribute():
   else:
     raise SyntaxError('Expected XHPy attribute type')
 
-  _x, attr_name = xhpy_attribute_name().next()
+  attr_name = ''
+  if attr_type_token[1] != str(TYPE_OBJECT):
+    _x, attr_name = xhpy_attribute_name().next()
 
   if token.id == '=':
     advance('=')
@@ -1305,7 +1307,7 @@ def tokenize_python(program):
     except KeyError:
       raise SyntaxError("Unexpected token %r" % (t,))
 
-def tokenize_xhpy(program):
+def tokenize_xhpy(program, debug=False):
   newline_token = None
   for id, value, start, end, line, type in tokenize_python(program):
     if ignore_whitespace[-1] and id in ['(newline)', '(indent)', '(dedent)']:
@@ -1324,11 +1326,13 @@ def tokenize_xhpy(program):
       newline_token.line += line
       continue
     elif newline_token is not None:
-      #print '(newline)', '\\n', newline_token.start, newline_token.end
+      if debug:
+        print '(newline)', '\\n', newline_token.start, newline_token.end
       yield newline_token
       newline_token = None
       # fall through to allow output of next token
-    #print id, value, start, end
+    if debug:
+      print id, value, start, end
     if id == '(name)':
       # note tokenize reads 'if', 'else', etc. as names
       symbol = symbol_table.get(value)
@@ -1352,9 +1356,9 @@ def tokenize_xhpy(program):
     s.type = type
     yield s
 
-def rewrite(program):
+def rewrite(program, debug=False):
   global token, next
-  next = tokenize_xhpy(program).next
+  next = tokenize_xhpy(program, debug).next
   token = next()
   # ignore leading whitespace, if any
   if token.id == '(newline)':
@@ -1363,9 +1367,9 @@ def rewrite(program):
     for t in statement():
       yield t
 
-def parse(program):
+def parse(program, debug=False):
   tokens = []
-  for t in rewrite(program):
+  for t in rewrite(program, debug):
     if t[0] == XHPY_SENTINEL:
       tokens.pop()
     else:
@@ -1374,4 +1378,5 @@ def parse(program):
 
 if __name__ == '__main__':
   import sys
-  print parse(sys.stdin.read())
+  debug = len(sys.argv) > 1 and sys.argv[1] == '-d'
+  print parse(sys.stdin.read(), debug)
