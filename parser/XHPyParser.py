@@ -569,6 +569,12 @@ constant('None')
 constant('True')
 constant('False')
 
+# support function list dereference with unary * operation
+@method(symbol('*'))
+def nud(self):
+  for t in single_expression():
+    yield t
+
 # support xhpy class names with unary : operation
 @method(symbol(':'))
 def nud(self):
@@ -688,6 +694,10 @@ def led(self):
   ignore_whitespace.append(True)
   if token.id != ')':
     for t in expression():
+      yield t
+  if token.id == 'for':
+    # generator comprehension
+    for t in comprehension_clause():
       yield t
   ignore_whitespace.pop()
   yield token.type, token.value
@@ -1007,7 +1017,7 @@ def function_argument():
     if token.id == '=':
       yield token.type, token.value
       advance('=')
-      for t in expression():
+      for t in single_expression():
         yield t
   else:
     raise SyntaxError('Expected an argument name')
@@ -1054,16 +1064,8 @@ def std(self):
   if token.id == '(':
     yield token.type, token.value
     advance('(')
-    if token.id != ')':
-      for t in class_name():
-        yield t
-      while True:
-        if token.id != ',':
-          break
-        yield token.type, token.value
-        advance(',')
-        for t in class_name():
-          yield t
+    for t in expression_ending_in(')'):
+      yield t
     yield token.type, token.value
     advance(')')
   yield token.type, token.value
