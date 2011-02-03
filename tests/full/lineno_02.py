@@ -1,4 +1,3 @@
-# TODO: make this work
 def foo():
  return <x>&#187;</x>
 def bar():

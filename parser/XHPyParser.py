@@ -39,7 +39,6 @@ ignore_whitespace = [False]
 # in list comprehensions if clauses, else takes some special handling: note
 # [x for x in L if x if f(x) else y] is incorrect syntax;
 # [x for x in L if (x if f(x) else y)] is not!
-# TODO: fully support the second syntax :)
 disallow_if_else = [False]
 
 def single_quotify(s):

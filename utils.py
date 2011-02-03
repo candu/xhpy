@@ -9,7 +9,6 @@ def tag2class(tag):
 
 def element2class(element):
   # strip leading ':' for consistency with tags
-  # TODO: these transformations are not 1-1, ignore already existing :xhpy
   start = element.startswith(':xhpy') and 6 or 1
   return 'xhpy_' + element[start:].replace(':', '__').replace('-', '_')
 
