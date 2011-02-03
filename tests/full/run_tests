@@ -12,7 +12,7 @@ import docstrings_02; print '[docstrings_02] DONE'
 import docstrings_03; print '[docstrings_03] DONE'
 import docstrings_05; print '[docstrings_05] DONE'
 import klass; print '[klass] DONE'
-# TODO: fix error parsing standard module inspect
+# TODO: fix parsing of module dis
 #import lineno_01; print '[lineno_01] DONE'
 # TODO: add support for comment tokens within tags
 #import lineno_02; print '[lineno_02] DONE'

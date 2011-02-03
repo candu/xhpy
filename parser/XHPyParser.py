@@ -74,6 +74,17 @@ def expression():
     for t in single_expression():
       yield t
 
+def expression_ending_in(id):
+  for t in single_expression():
+    yield t
+  while token.id == ',':
+    yield token.type, token.value
+    advance(',')
+    if token.id == id:
+      break
+    for t in single_expression():
+      yield t
+
 def statement():
   if token.std:
     yield token.type, token.value
@@ -397,10 +408,14 @@ def xhpy_block():
 
 def block():
   if token.id != '(newline)':
-    for t in expression():
-      yield t
-    yield token.type, token.value
-    advance('(newline)')
+    if token.id in keywords:
+      for t in statement():
+        yield t
+    else:
+      for t in expression():
+        yield t
+      yield token.type, token.value
+      advance('(newline)')
     return
   yield token.type, token.value
   advance('(newline)')
@@ -683,7 +698,7 @@ def nud(self):
   global ignore_whitespace
   ignore_whitespace.append(True)
   if token.id != ')':
-    for t in expression():
+    for t in expression_ending_in(')'):
       yield t
   if token.id == 'for':
     # generator comprehension
@@ -695,6 +710,12 @@ def nud(self):
 
 @method(symbol('['))
 def led(self):
+  global ignore_whitespace
+  ignore_whitespace.append(True)
+  # if [ is followed by (newline), skip it here as it won't be
+  # ignored by ignore_whitespace yet
+  if token.id == '(newline)':
+    advance('(newline)')
   if token.id == '.':
     # ellipsis
     yield token.type, token.value
@@ -757,6 +778,7 @@ def led(self):
           # L[x:y]
         # L[x:]
       # L[x]
+  ignore_whitespace.pop()
   yield token.type, token.value
   advance(']')
 
@@ -833,8 +855,13 @@ def led(self):
 @method(symbol('lambda'))
 def nud(self):
   if token.id != ':':
-    for t in argument_list():
+    for t in function_argument():
       yield t
+    while token.id == ',':
+      yield token.type, token.value
+      advance(',')
+      for t in function_argument():
+        yield t
   yield token.type, token.value
   advance(':')
   for t in expression():
@@ -987,10 +1014,12 @@ def function_argument():
 
 @method(symbol('def'))
 def std(self):
+  global ignore_whitespace
   if token.id != '(name)':
     raise SyntaxError('Expected a function name')
   yield token.type, token.value
   advance('(name)')
+  ignore_whitespace.append(True)
   yield token.type, token.value
   advance('(')
   while True:
@@ -1002,6 +1031,7 @@ def std(self):
       break
     yield token.type, token.value
     advance(',')
+  ignore_whitespace.pop()
   yield token.type, token.value
   advance(')')
   yield token.type, token.value
