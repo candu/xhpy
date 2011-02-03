@@ -1225,6 +1225,11 @@ def std(self):
 def std(self):
   for t in import_dotted_name():
     yield t
+  if token.id == 'as':
+    yield token.type, token.value
+    advance('as')
+    yield token.type, token.value
+    advance('(name)')
   while True:
     if token.id != ',':
       break
@@ -1232,6 +1237,11 @@ def std(self):
     advance(',')
     for t in import_dotted_name():
       yield t
+    if token.id == 'as':
+      yield token.type, token.value
+      advance('as')
+      yield token.type, token.value
+      advance('(name)')
   yield token.type, token.value
   advance('(newline)')
 
@@ -1249,6 +1259,11 @@ def import_target():
     # normal name
     yield token.type, token.value
     advance('(name)')
+    if token.id == 'as':
+      yield token.type, token.value
+      advance('as')
+      yield token.type, token.value
+      advance('(name)')
 
 def import_dotted_name():
   if token.id != '(name)':
