@@ -814,8 +814,12 @@ def comprehension_clause():
 def nud(self):
   global ignore_whitespace
   ignore_whitespace.append(True)
+  # if [ is followed by (newline), skip it here as it won't be
+  # ignored by ignore_whitespace yet
+  if token.id == '(newline)':
+    advance('(newline)')
   if token.id != ']':
-    for t in expression():
+    for t in expression_ending_in(']'):
       yield t
   if token.id == 'for':
     # list comprehension

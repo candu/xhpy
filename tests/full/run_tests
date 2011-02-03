@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
-import xhpy.init; print '[xhpy.init] DONE'
+import xhpy.init
+
 import array_constant; print '[array_constant] DONE'
 import attr_blank; print '[attr_blank] DONE'
 import attr_entity; print '[attr_entity] DONE'
@@ -12,7 +13,7 @@ import docstrings_02; print '[docstrings_02] DONE'
 import docstrings_03; print '[docstrings_03] DONE'
 import docstrings_05; print '[docstrings_05] DONE'
 import klass; print '[klass] DONE'
-# TODO: fix parsing of module keyword
+# TODO: add support for inspect getsourcelines()
 #import lineno_01; print '[lineno_01] DONE'
 # TODO: add support for comment tokens within tags
 #import lineno_02; print '[lineno_02] DONE'
