@@ -1,4 +1,4 @@
 *.swp
 *.pyc
-tests/precompiled/pylib/
-tests/precompiled/*.py
+xhpy/tests/precompiled/pylib/
+xhpy/tests/precompiled/*.py
