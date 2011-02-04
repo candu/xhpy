@@ -102,7 +102,7 @@ is replaced by the value of b. Note the use of `getAttribute()` and `appendChild
 
     self.getAttribute('bar')
 
-fetches the value of attribute bar (in this case, `range(3)`), whereas
+fetches the value of attribute `bar` (in this case, `range(3)`), whereas
 
     a.appendChild(<li>{b}</li>)
 
