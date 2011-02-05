@@ -1,4 +1,6 @@
 *.swp
 *.pyc
+MANIFEST
+dist/
 xhpy/tests/precompiled/pylib/
 xhpy/tests/precompiled/*.py

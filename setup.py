@@ -5,7 +5,12 @@ ROOT = os.path.abspath(os.path.dirname(__file__))
 
 setup(
   name = 'xhpy',
-  packages = ['xhpy'],
+  packages = [
+    'xhpy',
+    'xhpy.init',
+    'xhpy.parser',
+    'xhpy.pylib'
+  ],
   version = '0.6',
   author = 'Evan Stratford',
   author_email = 'evan.stratford@gmail.com',

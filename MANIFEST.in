@@ -1,5 +1,4 @@
 include LICENSE
 include README.rst
-# Exclusions should match XHPy-specific entries in .gitignore
-exclude xhpy/tests/precompiled/pylib
-exclude xhpy/tests/precompiled/*.py
+recursive-include xhpy/tests *.py *.py.in run_tests setup_tests
+recursive-exclude xhpy/tests/precompiled *.py
