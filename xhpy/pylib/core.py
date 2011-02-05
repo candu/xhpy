@@ -3,6 +3,8 @@ from xhpy.utils import htmlspecialchars, element2class
 
 from exception import *
 
+# TODO: <img /> singletons fail validation, but should pass
+
 ENABLE_VALIDATION = True
 
 class XHPyStrictValidator(object):
@@ -51,7 +53,7 @@ class XHPyStrictValidator(object):
     decl = element._xhpyChildrenDeclaration()
     if decl == CHILD_DECL_ANY:
       # any children allowed
-      return None
+      return
     if decl == CHILD_DECL_EMPTY:
       # no children allowed
       if element._children:

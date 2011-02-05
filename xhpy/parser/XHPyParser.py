@@ -18,6 +18,7 @@ from cStringIO import StringIO
 import tokenize
 
 # TODO: support comment tokens inside xhpy_text (e.g. &#187;)
+# TODO: xhpy_text puts spaces in places they aren't needed
 
 # parser state
 token = None
@@ -534,6 +535,9 @@ symbol(',')
 symbol(':')
 symbol(';')
 symbol('?')
+symbol('!')
+symbol('$')
+symbol('\\')
 
 symbol('print')
 symbol('del')
@@ -685,7 +689,7 @@ def xhpy_text():
   text = []
   for t in grab_until(lambda: token.id in ['{', '<']):
     text.append(t[1])
-  yield tokenize.STRING, "%r" % ''.join(text).replace('\'', '\\\'')
+  yield tokenize.STRING, "%r" % ' '.join(text).replace('\'', '\\\'')
 
 @method(symbol('('))
 def led(self):
