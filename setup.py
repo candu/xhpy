@@ -1,13 +1,19 @@
 import os.path
 from distutils.core import setup
 
-ROOT = os.path.abspath(os.path.dirname(__file__))
+# The standard distutils bytecode generation step spits out stacktraces on
+# trying to parse xhpy/pylib/core.py and xhpy/pylib/html.py as Python, so
+# we disable it here.
+import sys
+sys.dont_write_bytecode = True
 
+ROOT = os.path.abspath(os.path.dirname(__file__))
 setup(
   name = 'xhpy',
   packages = [
     'xhpy',
     'xhpy.init',
+    'xhpy.hook',
     'xhpy.parser',
     'xhpy.pylib'
   ],
