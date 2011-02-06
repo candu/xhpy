@@ -406,6 +406,11 @@ def block():
     else:
       for t in expression():
         yield t
+      while token.id == ';':
+        yield token.type, token.value
+        advance(';')
+        for t in expression():
+          yield t
       yield token.type, token.value
       advance('(newline)')
     return
@@ -687,8 +692,12 @@ def xhpy_text():
 def led(self):
   global ignore_whitespace
   ignore_whitespace.append(True)
+  # if ( is followed by (newline), skip it here as it won't be
+  # ignored by ignore_whitespace yet
+  if token.id == '(newline)':
+    advance('(newline)')
   if token.id != ')':
-    for t in expression():
+    for t in expression_ending_in(')'):
       yield t
   if token.id == 'for':
     # generator comprehension
@@ -702,6 +711,10 @@ def led(self):
 def nud(self):
   global ignore_whitespace
   ignore_whitespace.append(True)
+  # if ( is followed by (newline), skip it here as it won't be
+  # ignored by ignore_whitespace yet
+  if token.id == '(newline)':
+    advance('(newline)')
   if token.id != ')':
     for t in expression_ending_in(')'):
       yield t
@@ -828,6 +841,10 @@ def nud(self):
 def nud(self):
   global ignore_whitespace
   ignore_whitespace.append(True)
+  # if { is followed by (newline), skip it here as it won't be
+  # ignored by ignore_whitespace yet
+  if token.id == '(newline)':
+    advance('(newline)')
   while token.id != '}':
     for t in single_expression():
       yield t
@@ -1010,16 +1027,9 @@ def function_argument():
     advance('**')
     yield token.type, token.value
     advance('(name)')
-  elif token.id == '(name)':
-    yield token.type, token.value
-    advance('(name)')
-    if token.id == '=':
-      yield token.type, token.value
-      advance('=')
-      for t in single_expression():
-        yield t
   else:
-    raise SyntaxError('Expected an argument name')
+    for t in single_expression():
+      yield t
 
 @method(symbol('def'))
 def std(self):

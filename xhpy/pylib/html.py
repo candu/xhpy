@@ -132,7 +132,7 @@ class :address(:xhpy:html-element):
 
 
 class :area(:xhpy:html-singleton):
-  attribute string alt, string coords, string href, bool nohref, string target
+  attribute string alt, string coords, string href, bool nohref, string shape, string target
   def __init__(self, attributes={}, children=[]):
     super(:xhpy:html-element, self).__init__(attributes, children)
     self.tagName = 'area'

@@ -1,5 +1,5 @@
 from xhpy.constants import *
-from xhpy.utils import htmlspecialchars, element2class
+from  xhpy.utils import htmlspecialchars, element2class
 
 from exception import *
 
@@ -21,10 +21,14 @@ class XHPyStrictValidator(object):
   def validateAttributeValue(self, element, attr, val):
     if val is None:
       return None
-    
-    decl = element._xhpyAttributeDeclaration()
-    if attr not in decl:
-      raise XHPyAttributeNotSupportedException(element, attr)
+
+    that = element
+    decl = that._xhpyAttributeDeclaration()
+    while attr not in decl:
+      if not isinstance(that, :x:base):
+        raise XHPyAttributeNotSupportedException(element, attr)
+      that = super(type(that), that)
+      decl = that._xhpyAttributeDeclaration()
     attr_type = decl[attr][0]
     if attr_type == TYPE_STRING:
       return self._safe(str, val)
