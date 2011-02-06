@@ -351,18 +351,10 @@ def xhpy_children_decl():
   yield tokenize.OP, ':'
   yield tokenize.NAME, 'return'
   if token.value == 'any':
-    yield tokenize.OP, '('
     yield tokenize.NUMBER, str(CHILD_DECL_ANY)
-    yield tokenize.OP, ','
-    yield tokenize.STRING, '\'any\''
-    yield tokenize.OP, ')'
     advance('(name)')
   elif token.value == 'empty':
-    yield tokenize.OP, '('
     yield tokenize.NUMBER, str(CHILD_DECL_EMPTY)
-    yield tokenize.OP, ','
-    yield tokenize.STRING, '\'any\''
-    yield tokenize.OP, ')'
     advance('(name)')
   else:
     for t in xhpy_children_sequence():
