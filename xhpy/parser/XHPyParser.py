@@ -182,7 +182,7 @@ def xhpy_attribute():
 
   if token.id == '=':
     advance('=')
-    attr_default_tokens = list(expression())
+    attr_default_tokens = list(single_expression())
   elif token.id == '@':
     advance('@')
     if token.value != 'required':

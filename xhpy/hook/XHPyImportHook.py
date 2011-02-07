@@ -15,12 +15,16 @@ def xhpy_load_transformed_module(name, fp, pathname, description):
   try:
     xhpy_code = fp.read()
     py_code = parse(xhpy_code)
-  
     exec py_code in mod.__dict__
     return mod
-  except SyntaxError:
+  except SyntaxError, e:
     del(sys.modules[name])
-    raise ImportError("Syntax error in module %s!" % name)
+    raise ImportError("""\
+Syntax error in module %s!
+
+%s:%s,%s
+%s
+""" % (name, e.filename, e.lineno, e.offset, e.text))
   except:
     raise
 
