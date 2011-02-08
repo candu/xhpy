@@ -14,7 +14,7 @@ setup(
     'xhpy',
     'xhpy.pylib'
   ],
-  version = '0.6',
+  version = '0.7',
   author = 'Evan Stratford',
   author_email = 'evan.stratford@gmail.com',
   license = 'Apache',
