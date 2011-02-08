@@ -6,5 +6,5 @@
 #
 MYDIR=$(dirname $0)
 for FILE in $MYDIR/*.py; do
-  python $MYDIR/../../parser/XHPyParser.py < "$FILE"
+  python $MYDIR/../../parser.py < "$FILE"
 done

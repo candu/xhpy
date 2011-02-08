@@ -2,7 +2,7 @@ import compiler
 import imp
 import marshal
 import sys
-from xhpy.parser.XHPyParser import parse
+from xhpy.parser import parse
 
 class XHPyImporter(object):
 
@@ -75,5 +75,8 @@ class XHPyImporter(object):
     exec code in mod.__dict__
     return mod
 
+def register_xhpy_module(name):
+  XHPyImporter.register_xhpy_module(name)
+
 sys.meta_path.append(XHPyImporter())
-XHPyImporter.register_xhpy_module('xhpy')
+register_xhpy_module('xhpy')

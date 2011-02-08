@@ -12,9 +12,6 @@ setup(
   name = 'xhpy',
   packages = [
     'xhpy',
-    'xhpy.init',
-    'xhpy.hook',
-    'xhpy.parser',
     'xhpy.pylib'
   ],
   version = '0.6',
