@@ -63,11 +63,9 @@ class XHPyImporter(object):
     pyc_name = xhpy_name + 'c'
     if os.path.isfile(pyc_name) and\
        os.path.getmtime(pyc_name) >= os.path.getmtime(xhpy_name):
-      print "fresh .pyc"
       with open(pyc_name, 'rb') as pyc_fp:
         code = marshal.load(pyc_fp)
     else:
-      print "stale or no .pyc"
       with open(xhpy_name, 'r') as xhpy_fp:
         xhpy_code = xhpy_fp.read()
       py_code = parse(xhpy_code)
