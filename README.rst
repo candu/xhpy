@@ -22,7 +22,8 @@ In bar.py:
 
 ::
 
-    import xhpy.init
+    from xhpy.init import register_xhpy_module
+    register_xhpy_module('foo')
     import foo
 
 In foo.py:
@@ -56,9 +57,22 @@ XHPy adds some new syntax to Python. Line by line replay time!
 
 ::
 
-    import xhpy.init
+    from xhpy.init import register_xhpy_module
 
-This initializes XHPy; from now on, everything you import will be interpreted as XHPy.
+This initializes XHPy and allows you to register modules to be interpreted as XHPy.
+
+::
+
+    register_xhpy_module('foo')
+
+Now the ``foo`` module in ``foo.py`` will be interpreted as XHPy when imported.
+If ``foo`` were a package, all of its submodules would also be registered; this is
+useful for registering UI libraries.
+
+::
+
+    import foo
+
 To actually use XHPy, however, you will probably want the core library:
 
 ::
@@ -180,7 +194,7 @@ When you
     import xhpy.init
 
 XHPy installs an `import hook <http://www.python.org/dev/peps/pep-0302/>`_.
-This hook traps all subsequent import statements, running them through a preprocessor
+This hook traps subsequent import statements, running them through a preprocessor
 that parses a superset of Python. This preprocessor translates XHPy tags and class
 names to valid Python, then executes the translated code in module scope.
 
