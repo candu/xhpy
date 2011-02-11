@@ -432,7 +432,7 @@ class symbol_base(object):
 
   def nud(self):
     raise SyntaxError("Syntax error (%r)." % self.id)
-  
+
   def led(self):
     raise SyntaxError("Unknown operator (%r)." % self.id)
 
@@ -575,6 +575,12 @@ def nud(self):
   for t in single_expression():
     yield t
 
+# support function dict dereference with unary ** operation
+@method(symbol('**'))
+def nud(self):
+  for t in single_expression():
+    yield t
+
 # support xhpy class names with unary : operation
 @method(symbol(':'))
 def nud(self):
@@ -601,7 +607,7 @@ def nud(self, recursive=False):
   ignore_whitespace.append(True)
   tag_type, tag_open_name = xhpy_tag_name().next()
   yield tag_type, tag_open_name
-  yield tokenize.OP, '(' 
+  yield tokenize.OP, '('
   for t in xhpy_tag_attrs():
     yield t
   if token.id == '/':
@@ -643,9 +649,9 @@ def nud(self, recursive=False):
       yield tokenize.OP, ','
   yield tokenize.OP, ']'
   yield tokenize.OP, ')'
-  
+
 def xhpy_tag_name():
-  # drop 
+  # drop
   tag_name = list(symbol(':')().nud())[1:]
   yield tokenize.NAME, ''.join([t[1] for t in tag_name])
 
@@ -768,7 +774,7 @@ def led(self):
           # L[:y:]
         # L[:y]
       # L[:]
-    else: 
+    else:
       for t in expression():
         yield t
       if token.id == ':':
