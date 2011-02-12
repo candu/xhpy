@@ -169,16 +169,11 @@ def xhpy_attribute():
     attr_type_token = tokenize.NUMBER, str(TYPE_ENUM)
     advance('(name)')
     attr_meta_tokens = list(xhpy_enum())
-  elif token.id == ':':
-    attr_type_token = tokenize.NUMBER, str(TYPE_OBJECT)
-    advance(':')
-    attr_meta_tokens = list(xhpy_tag_name())
   else:
-    raise SyntaxError('Expected XHPy attribute type')
+    attr_type_token = tokenize.NUMBER, str(TYPE_OBJECT)
+    attr_meta_tokens = list(single_expression())
 
-  attr_name = ''
-  if attr_type_token[1] != str(TYPE_OBJECT):
-    _x, attr_name = xhpy_attribute_name().next()
+  _x, attr_name = xhpy_attribute_name().next()
 
   if token.id == '=':
     advance('=')
