@@ -7,11 +7,6 @@ HTML.
 def tag2class(tag):
   return 'xhpy_' + tag.replace(':', '__').replace('-', '_')
 
-def element2class(element):
-  # strip leading ':' for consistency with tags
-  start = element.startswith(':xhpy') and 6 or 1
-  return 'xhpy_' + element[start:].replace(':', '__').replace('-', '_')
-
 def class2element(klass):
   return klass[5:].replace('__', ':').replace('_', '-')
 

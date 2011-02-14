@@ -1,5 +1,5 @@
 from xhpy.constants import *
-from  xhpy.utils import htmlspecialchars, element2class
+from  xhpy.utils import htmlspecialchars, tag2class
 
 from exception import *
 
@@ -197,7 +197,7 @@ class :x:base(object):
       if decl[0] == CHILD_EXPR_OR:
         return '|'.join([_helper(d) for d in decl[1]])
     return _helper(decl)
-  
+
   def __init__(self):
     raise NotImplementedError('not implemented!')
 
@@ -260,7 +260,8 @@ class :x:composable-element(:x:base):
     """
     if not tag_name:
       return self._children
-    tag_name = element2class(tag_name)
+    # TODO: fix tag_name matching
+    tag_name = tag2class(tag_name)
     tag_class = globals()[tag_name]
     return [child for child in self._children if isinstance(child, tag_class)]
 
@@ -323,7 +324,7 @@ class :x:primitive(:x:composable-element):
 
   def stringify(self):
     pass
-  
+
   def __str__(self):
     self._flushElementChildren()
     if ENABLE_VALIDATION:
