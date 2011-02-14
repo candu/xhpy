@@ -1088,24 +1088,6 @@ def std(self):
       yield t
   in_xhpy_class.pop()
 
-def class_name_fragment():
-  if token.id == ':':
-    advance(':')
-    tag_type, tag_name = xhpy_tag_name().next()
-    yield tokenize.NAME, tag_name
-  elif token.id == '(name)':
-    yield token.type, token.value
-    advance('(name)')
-
-def class_name():
-  for t in class_name_fragment():
-    yield t
-  while token.id == '.':
-    yield token.type, token.value
-    advance('.')
-    for t in class_name_fragment():
-      yield t
-
 @method(symbol('@'))
 def std(self):
   if token.id != '(name)':
