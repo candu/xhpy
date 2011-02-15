@@ -10,7 +10,7 @@ class XHPyImporter(object):
   __xhpy_module_map = {}
   __xhpy_path_cache = {}
   __xhpy_leaf = '__leaf'
-  
+
   @classmethod
   def register_xhpy_module(cls, name):
     """
@@ -69,11 +69,11 @@ class XHPyImporter(object):
       with open(xhpy_name, 'r') as xhpy_fp:
         xhpy_code = xhpy_fp.read()
       py_code = parse(xhpy_code)
-      code = compiler.compile(py_code, pyc_name, 'exec')
+      code = compiler.compile(py_code, xhpy_name, 'exec')
       with open(pyc_name, 'wb') as pyc_fp:
         marshal.dump(code, pyc_fp)
     mod = sys.modules[name]
-    mod.__file__ = pyc_name
+    mod.__file__ = xhpy_name
     mod.__loader__ = self
     if ispkg:
       mod.__path__ = []

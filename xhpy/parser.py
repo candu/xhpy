@@ -1366,9 +1366,10 @@ def tokenize_collapse_multiple_newlines(program):
       if newline_token is None:
         symbol = symbol_table['(newline)']
         newline_token = symbol()
-        newline_token.value = t.value
+        newline_token.value = ''
         newline_token.start = t.start
         newline_token.type = t.type
+      newline_token.value += t.value
       newline_token.end = t.end
       continue
     elif newline_token is not None:
