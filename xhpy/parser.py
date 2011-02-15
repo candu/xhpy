@@ -18,7 +18,6 @@ from cStringIO import StringIO
 import tokenize
 
 # TODO: support comment tokens inside xhpy_text (e.g. &#187;)
-# TODO: xhpy_text puts spaces in places they aren't needed
 
 # parser state
 token = None
