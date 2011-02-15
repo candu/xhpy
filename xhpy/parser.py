@@ -695,9 +695,13 @@ def get_relpos(p2, p1):
 
 def xhpy_text():
   text = []
+  end = token.end
   for t in grab_until(lambda: token.id in ['{', '<']):
+    if text and token.start != end:
+      text.append(' ')
+    end = token.end
     text.append(t[1])
-  yield tokenize.STRING, "%r" % ' '.join(text).replace('\'', '\\\'')
+  yield tokenize.STRING, "%r" % ''.join(text).replace('\'', '\\\'')
 
 @method(symbol('('))
 def led(self):
