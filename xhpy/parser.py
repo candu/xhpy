@@ -19,11 +19,11 @@ import tokenize
 
 # TODO: support comment tokens inside xhpy_text (e.g. &#187;)
 # TODO: xhpy_text puts spaces in places they aren't needed
-# TODO: print line number, line in SyntaxError for easier debugging
 
 # parser state
 token = None
 next = None
+line = None   # current line, for debugging
 
 # table mapping operators to symbol_base subclasses
 symbol_table = {}
@@ -43,13 +43,22 @@ ignore_whitespace = [False]
 # [x for x in L if (x if f(x) else y)] is not!
 disallow_if_else = [False]
 
+class XHPySyntaxError(SyntaxError):
+  def __init__(self, msg):
+    super(XHPySyntaxError, self).__init__("""\
+%s at line %d, column %d
+
+%s%s^
+""" % (msg, token.start[0], token.start[1], line, ' '*token.start[1]))
+    self.lineno = token.start[0]
+
 def single_quotify(s):
   return "'%s'" % s.replace('\'', '\\\'')
 
 def advance(id=None):
   global token
   if id and token.id != id:
-    raise SyntaxError("Expected %r" % id)
+    raise XHPySyntaxError("Expected '%s'" % id)
   token = next()
 
 def single_expression(rbp=0):
@@ -124,7 +133,7 @@ def xhpy_token_normalize():
     yield token.type, token.value
     advance()
   else:
-    raise SyntaxError('Expected valid XHPy attribute token')
+    raise XHPySyntaxError('Expected valid XHPy attribute token')
 
 def xhpy_attribute_name():
   attr_name = []
@@ -182,7 +191,7 @@ def xhpy_attribute():
   elif token.id == '@':
     advance('@')
     if token.value != 'required':
-      raise SyntaxError('Expected XHPy attribute @required annotation')
+      raise XHPySyntaxError('Expected XHPy attribute @required annotation')
     attr_required_token = tokenize.NAME, 'True'
     advance('(name)')
 
@@ -281,7 +290,7 @@ def xhpy_child_atom():
       yield t
     advance(')')
   else:
-    raise SyntaxError('Expected valid XHPy child')
+    raise XHPySyntaxError('Expected valid XHPy child')
 
 def xhpy_child_term():
   yield tokenize.OP, '('
@@ -427,10 +436,10 @@ class symbol_base(object):
   value = None
 
   def nud(self):
-    raise SyntaxError("Syntax error (%r)." % self.id)
+    raise XHPySyntaxError("Syntax error (%r)." % self.id)
 
   def led(self):
-    raise SyntaxError("Unknown operator (%r)." % self.id)
+    raise XHPySyntaxError("Unknown operator (%r)." % self.id)
 
   std = None
 
@@ -624,7 +633,7 @@ def nud(self, recursive=False):
         advance('/')
         tag_type, tag_close_name = xhpy_tag_name().next()
         if tag_open_name != tag_close_name:
-          raise SyntaxError("Expected closing tag </%s>, got </%s>" % (tag_open_name, tag_close_name))
+          raise XHPySyntaxError("Expected closing tag </%s>, got </%s>" % (tag_open_name, tag_close_name))
         ignore_whitespace.pop()
         advance('>')
         break
@@ -667,7 +676,7 @@ def xhpy_tag_attrs():
       yield token.type, token.value
       advance('(literal)')
     else:
-      raise SyntaxError('Expected XHPy attribute value')
+      raise XHPySyntaxError('Expected XHPy attribute value')
     yield tokenize.OP, ','
   yield tokenize.OP, '}'
 
@@ -876,7 +885,7 @@ def led(self):
 @method(symbol('.'))
 def led(self):
   if token.id != '(name)':
-    raise SyntaxError('Expected an attribute name')
+    raise XHPySyntaxError('Expected an attribute name')
   yield token.type, token.value
   advance()
 
@@ -898,7 +907,7 @@ def nud(self):
 @method(symbol('not'))
 def led(self):
   if token.id != 'in':
-    raise SyntaxError('Invalid syntax')
+    raise XHPySyntaxError('Invalid syntax')
   yield token.type, token.value
   advance()
   self.id = 'not in'
@@ -1037,7 +1046,7 @@ def function_argument():
 def std(self):
   global ignore_whitespace
   if token.id != '(name)':
-    raise SyntaxError('Expected a function name')
+    raise XHPySyntaxError('Expected a function name')
   yield token.type, token.value
   advance('(name)')
   ignore_whitespace.append(True)
@@ -1092,7 +1101,7 @@ def std(self):
 @method(symbol('@'))
 def std(self):
   if token.id != '(name)':
-    raise SyntaxError('Expected a decorator call')
+    raise XHPySyntaxError('Expected a decorator call')
   for t in expression():
     yield t
   yield token.type, token.value
@@ -1119,7 +1128,7 @@ def std(self):
     for t in u.std():
       yield t
   else:
-    raise SyntaxError('Expected a decorated function or class')
+    raise XHPySyntaxError('Expected a decorated function or class')
 
 @method(symbol('print'))
 def std(self):
@@ -1262,7 +1271,7 @@ def import_target():
 
 def import_dotted_name():
   if token.id != '(name)':
-    raise SyntaxError('Expected import dotted name')
+    raise XHPySyntaxError('Expected import dotted name')
   yield token.type, token.value
   advance('(name)')
   while True:
@@ -1297,7 +1306,7 @@ def std(self):
 def argument_list():
   while True:
     if token.id != '(name)':
-      raise SyntaxError('Expected an argument name')
+      raise XHPySyntaxError('Expected an argument name')
     yield token.type, token.value
     advance()
     if token.id != ',':
@@ -1306,6 +1315,7 @@ def argument_list():
     advance(',')
 
 def tokenize_python(program):
+  global line
   type_map = {
     tokenize.NUMBER: '(literal)',
     tokenize.STRING: '(literal)',
@@ -1326,8 +1336,9 @@ def tokenize_python(program):
       yield type_map[t_type], t_value, t_start, t_end, t_type
       if t_type == tokenize.ENDMARKER:
         break
+      line = t_line
     except KeyError:
-      raise SyntaxError("Unexpected token %r" % (t,))
+      raise XHPySyntaxError("Unexpected token %r" % (t,))
 
 def tokenize_collapse_multiple_strings(program):
   string_token = None
@@ -1397,7 +1408,7 @@ def tokenize_xhpy(program):
     elif id == '(operator)':
       symbol = symbol_table.get(value)
       if not symbol:
-        raise SyntaxError("Unknown operator (%r)" % id)
+        raise XHPySyntaxError("Unknown operator (%r)" % id)
       s = symbol()
     else:
       symbol = symbol_table[id]

@@ -5,8 +5,8 @@ class :foo(object):
     pass
 class :bar(object):
   attribute
-    :foo,
-    :foo,
+    :foo foo1,
+    :foo foo2,
     string bar
   def __init__(self):
     pass
