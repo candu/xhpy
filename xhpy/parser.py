@@ -19,6 +19,7 @@ import tokenize
 
 # TODO: support comment tokens inside xhpy_text (e.g. &#187;)
 # TODO: xhpy_text puts spaces in places they aren't needed
+# TODO: print line number, line in SyntaxError for easier debugging
 
 # parser state
 token = None

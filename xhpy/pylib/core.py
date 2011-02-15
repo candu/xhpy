@@ -262,8 +262,7 @@ class :x:composable-element(:x:base):
       return self._children
     # TODO: fix tag_name matching
     tag_name = tag2class(tag_name)
-    tag_class = globals()[tag_name]
-    return [child for child in self._children if isinstance(child, tag_class)]
+    return [child for child in self._children if child.__class__.__name__ == tag_name]
 
   def getAttribute(self, attr):
     """

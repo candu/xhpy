@@ -47,14 +47,14 @@ class :xhpy:html-element(:x:primitive):
     return buf
 
   def addClass(self, klass):
-    klass = klass.trim()
+    klass = klass.strip()
     currentClasses = self.getAttribute('class')
     tmp = ' ' + currentClasses + ' '
     has = tmp.find(' ' + klass + ' ')
     if has != -1:
       return self
     tmp = currentClasses + ' ' + klass
-    self.setAttribute('class', tmp.trim())
+    self.setAttribute('class', tmp.strip())
     return self
 
   def stringify(self):
@@ -855,7 +855,7 @@ class :x:doctype(:x:primitive):
   Render an <html /> element with a DOCTYPE, great for dumping a page to a
   browser. Choose from a wide variety of flavors like XHTML 1.0 Strict, HTML
   4.01 Transitional, and new and improved HTML 5!
-  
+
   Note: Some flavors may not be available in your area.
   """
   children (:html)
