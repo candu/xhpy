@@ -56,6 +56,8 @@ def single_quotify(s):
 
 def advance(id=None):
   global token
+  if token.type == tokenize.ENDMARKER:
+    raise XHPySyntaxError("advance() past end")
   if id and token.id != id:
     raise XHPySyntaxError("Expected '%s'" % id)
   token = next()
