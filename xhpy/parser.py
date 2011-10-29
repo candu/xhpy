@@ -998,8 +998,9 @@ def std(self):
       break
     yield token.type, token.value
     advance('except')
-    for t in expression():
-      yield t
+    if token.id != ':':
+      for t in expression():
+        yield t
     yield token.type, token.value
     advance(':')
     for t in block():
