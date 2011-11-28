@@ -261,6 +261,9 @@ class :x:composable-element(:x:base):
     tag_name = tag2class(tag_name)
     return [child for child in self._children if child.__class__.__name__ == tag_name]
 
+  def getNumChildren(self, tag_name=None):
+    return len(self.getChildren(tag_name))
+
   def getFirstChild(self):
     """
     Fetches the first child of this element. If there are no children, an
