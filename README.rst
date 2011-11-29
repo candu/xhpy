@@ -155,7 +155,7 @@ fetches the value of attribute ``bar`` (in this case, ``range(3)``), whereas
 adds ``<li>{b}</li>`` as a child of ``a = <ul />``.
 
 XHPy is largely based off XHP; for more details on the latter, see the
-`XHP wiki <https://github.com/facebook/xhp/wiki/`_. The syntax has been adapted for
+`XHP wiki <https://github.com/facebook/xhp/wiki/>`_. The syntax has been adapted for
 Python; in particular:
 
 - there are no semicolons;
