@@ -1414,7 +1414,7 @@ def tokenize_xhpy(program):
     elif id == '(operator)':
       symbol = symbol_table.get(value)
       if not symbol:
-        raise XHPySyntaxError("Unknown operator (%r)" % id)
+        raise XHPySyntaxError("Unknown operator (%r)" % value)
       s = symbol()
     else:
       symbol = symbol_table[id]
