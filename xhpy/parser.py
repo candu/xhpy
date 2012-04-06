@@ -528,6 +528,7 @@ symbol('(literal)').nud = lambda self: []
 symbol('(name)').nud = lambda self: []
 symbol('(indent)').nud = lambda self: []
 symbol('(dedent)').nud = lambda self: []
+symbol('(comment)').nud = lambda self: []
 symbol('(newline)').nud = lambda self: []
 symbol('(end)')
 
@@ -1329,6 +1330,7 @@ def tokenize_python(program):
     tokenize.DEDENT: '(dedent)',
     tokenize.NL: '(newline)',
     tokenize.NEWLINE: '(newline)',
+    tokenize.COMMENT: '(comment)',
     tokenize.OP: '(operator)',
     tokenize.ERRORTOKEN: '(operator)',    # probably ?
     tokenize.NAME: '(name)',
@@ -1337,7 +1339,7 @@ def tokenize_python(program):
   for t in tokenize.generate_tokens(StringIO(program).next):
     t_type, t_value, t_start, t_end, t_line = t
     try:
-      if t_type == tokenize.COMMENT:
+      if t_type == tokenize.COMMENT and t_start[0] >= 2:
         continue
       yield type_map[t_type], t_value, t_start, t_end, t_type
       if t_type == tokenize.ENDMARKER:
