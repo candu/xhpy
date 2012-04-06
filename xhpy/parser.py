@@ -1186,7 +1186,7 @@ def std(self):
     for t in expression():
       yield t
   yield token.type, token.value
-  advance('(newline)')
+  advance()
 
 @method(symbol('raise'))
 def std(self):
@@ -1204,7 +1204,7 @@ def std(self):
     for t in expression():
       yield t
   yield token.type, token.value
-  advance('(newline)')
+  advance()
 
 @method(symbol('yield'))
 def std(self):
@@ -1212,7 +1212,7 @@ def std(self):
     for t in expression():
       yield t
   yield token.type, token.value
-  advance('(newline)')
+  advance()
 
 @method(symbol('from'))
 def std(self):
@@ -1230,7 +1230,7 @@ def std(self):
     for t in import_target():
       yield t
   yield token.type, token.value
-  advance('(newline)')
+  advance()
 
 @method(symbol('import'))
 def std(self):
@@ -1254,7 +1254,7 @@ def std(self):
       yield token.type, token.value
       advance('(name)')
   yield token.type, token.value
-  advance('(newline)')
+  advance()
 
 def import_target():
   if token.id == '*':
