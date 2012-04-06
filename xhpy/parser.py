@@ -1416,7 +1416,10 @@ def tokenize_xhpy(program):
     elif id == '(operator)':
       symbol = symbol_table.get(value)
       if not symbol:
-        raise XHPySyntaxError("Unknown operator (%r)" % value)
+        # This might be a non-ASCII character within an XHPy element. If it's
+        # not, we let the Python parser sort it out.
+        symbol = symbol_table['(literal)']
+        type = tokenize.STRING
       s = symbol()
     else:
       symbol = symbol_table[id]
