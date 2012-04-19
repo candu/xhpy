@@ -1,2 +1,2 @@
-from core import *
-from html import *
+from .core import *
+from .html import *

@@ -11,8 +11,8 @@ The parser then spits out a stream of modified tokens, which is fed to
 tokenize.untokenize to produce Python output.
 """
 
-from xhpy.constants import *
-from xhpy.utils import tag2class
+from .constants import *
+from .utils import tag2class
 
 from cStringIO import StringIO
 import tokenize
@@ -1216,8 +1216,12 @@ def std(self):
 
 @method(symbol('from'))
 def std(self):
-  for t in import_dotted_name():
-    yield t
+  if token.id == '.':
+    for t in import_relative_name():
+      yield t
+  else:
+    for t in import_dotted_name():
+      yield t
   yield token.type, token.value
   advance('import')
   for t in import_target():
@@ -1275,6 +1279,16 @@ def import_target():
       advance('as')
       yield token.type, token.value
       advance('(name)')
+
+def import_relative_name():
+  if token.id != '.':
+    raise XHPySyntaxError('Expected import relative name')
+  while token.id == '.':
+    yield token.type, token.value
+    advance('.')
+  if token.id != 'import':
+    for t in import_dotted_name():
+      yield t
 
 def import_dotted_name():
   if token.id != '(name)':

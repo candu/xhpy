@@ -4,8 +4,8 @@ with a series of base classes for supporting common HTML attributes and
 operations.
 """
 
-from core import :x:base, :x:primitive
-from xhpy.utils import get_probably_unique_id, htmlspecialchars
+from .core import :x:base, :x:primitive
+from ..utils import get_probably_unique_id, htmlspecialchars
 
 class :xhpy:html-element(:x:primitive):
   attribute

@@ -1,4 +1,4 @@
-from xhpy.utils import class2element
+from ..utils import class2element
 
 class XHPyException(Exception):
   @classmethod

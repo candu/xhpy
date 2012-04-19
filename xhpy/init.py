@@ -3,7 +3,7 @@ import imp
 import marshal
 import os.path
 import sys
-from xhpy.parser import parse
+from .parser import parse
 
 class XHPyImporter(object):
 

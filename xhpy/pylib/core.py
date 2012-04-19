@@ -1,7 +1,7 @@
-from xhpy.constants import *
-from  xhpy.utils import htmlspecialchars, tag2class
+from ..constants import *
+from ..utils import htmlspecialchars, tag2class
 
-from exception import *
+from .exception import *
 
 ENABLE_VALIDATION = True
 
