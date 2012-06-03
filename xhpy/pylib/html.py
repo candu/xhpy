@@ -459,7 +459,8 @@ class :input(:xhpy:html-singleton):
       "button", "checkbox", "file", "hidden", "image", "password", "radio",
       "reset", "submit", "text", "date"
     } type,
-    string value
+    string value,
+    string required
   category %flow, %phrase, %interactive
   def __init__(self, attributes={}, children=[]):
     super(:xhpy:html-element, self).__init__(attributes, children)
@@ -761,7 +762,9 @@ class :td(:xhpy:html-element):
 
 
 class :textarea(:xhpy:pseudo-singleton):
-  attribute int cols, int rows, bool disabled, string name, bool readonly, string placeholder
+  attribute
+    int cols, int rows, bool disabled, string name, bool readonly,
+    string placeholder, string required
   category %flow, %phrase, %interactive
   def __init__(self, attributes={}, children=[]):
     super(:xhpy:html-element, self).__init__(attributes, children)
