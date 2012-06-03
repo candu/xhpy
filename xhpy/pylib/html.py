@@ -457,7 +457,7 @@ class :input(:xhpy:html-singleton):
     bool readonly, int size, string src,
     enum {
       "button", "checkbox", "file", "hidden", "image", "password", "radio",
-      "reset", "submit", "text"
+      "reset", "submit", "text", "date"
     } type,
     string value
   category %flow, %phrase, %interactive
@@ -534,7 +534,8 @@ class :meta(:xhpy:html-singleton):
     enum {
       "content-type", "content-style-type", "expires", "refresh", "set-cookie"
     } http-equiv,
-    string http-equiv, string name, string scheme
+    string http-equiv, string name, string scheme,
+    string charset
   category %metadata
   def __init__(self, attributes={}, children=[]):
     super(:xhpy:html-element, self).__init__(attributes, children)
@@ -760,7 +761,7 @@ class :td(:xhpy:html-element):
 
 
 class :textarea(:xhpy:pseudo-singleton):
-  attribute int cols, int rows, bool disabled, string name, bool readonly
+  attribute int cols, int rows, bool disabled, string name, bool readonly, string placeholder
   category %flow, %phrase, %interactive
   def __init__(self, attributes={}, children=[]):
     super(:xhpy:html-element, self).__init__(attributes, children)
