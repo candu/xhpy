@@ -40,7 +40,7 @@ class :xhpy:html-element(:x:primitive):
     buf = '<' + self.tagName
     attributes = self.getAttributes()
     for key in attributes:
-      val = attributes[key]
+      val = unicode(attributes[key])
       if val is not None and val is not False:
         buf += ' ' + htmlspecialchars(key) + '="' +\
                      htmlspecialchars(val, True) + '"'
@@ -456,8 +456,29 @@ class :input(:xhpy:html-singleton):
     string alt, bool checked, bool disabled, int maxlength, string name,
     bool readonly, int size, string src,
     enum {
-      "button", "checkbox", "file", "hidden", "image", "password", "radio",
-      "reset", "submit", "text", "date"
+      "button",
+      "checkbox",
+      "color",
+      "date",
+      "datetime",
+      "datetime-local",
+      "email",
+      "file",
+      "hidden",
+      "image",
+      "month",
+      "number",
+      "password",
+      "radio",
+      "range",
+      "reset",
+      "search",
+      "submit",
+      "tel",
+      "text",
+      "time",
+      "url",
+      "week"
     } type,
     string value,
     string required
