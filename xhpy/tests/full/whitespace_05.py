@@ -1,5 +1,5 @@
 from xhpy.pylib import *
-print\
+result = \
 <a>
   foo
 </a>

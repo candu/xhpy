@@ -7,4 +7,4 @@ class :thing(object):
 def foo():
   pass
 import inspect
-print inspect.getsourcelines(foo)
+result = inspect.getsourcelines(foo)

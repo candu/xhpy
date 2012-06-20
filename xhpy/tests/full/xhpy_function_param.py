@@ -6,4 +6,4 @@ class xhpy_thing:
   def exist(self):
     pass
 id(<thing />).exist()
-print 'pass'
+result = 'pass'

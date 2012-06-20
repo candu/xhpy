@@ -5,4 +5,4 @@ class xhpy_x__y:
 a = <x:y attr={CONSTANT} />
 def f():
   pass
-print 'pass'
+result = 'pass'

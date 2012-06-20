@@ -3,5 +3,5 @@ from xhpy.pylib import *
 def foo():
   'b'
   pass
-print foo.__doc__
+result = foo.__doc__
 <a />

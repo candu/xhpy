@@ -10,4 +10,4 @@ class :bar(object):
     string bar
   def __init__(self):
     pass
-print "pass"
+result = "pass"

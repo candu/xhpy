@@ -1,5 +1,5 @@
 from xhpy.pylib import *
-print <a>
+result = <a>
 <a>
 </a>+
 </a>

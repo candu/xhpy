@@ -11,6 +11,10 @@ The parser then spits out a stream of modified tokens, which is fed to
 tokenize.untokenize to produce Python output.
 """
 
+if __package__ is None:
+    import xhpy
+    __package__ = 'xhpy'
+
 from .constants import *
 from .utils import tag2class
 

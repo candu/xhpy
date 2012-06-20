@@ -2,5 +2,5 @@
 *.pyc
 MANIFEST
 dist/
-xhpy/tests/precompiled/pylib/
+xhpy/tests/precompiled/xhpy_precompiled
 xhpy/tests/precompiled/*.py

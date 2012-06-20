@@ -5,5 +5,5 @@ class foo:
   def bar(self):
     'c'
     pass
-print foo.bar.__doc__    
+result = foo.bar.__doc__
 <a />

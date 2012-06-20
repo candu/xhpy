@@ -1,3 +1,3 @@
-print True ^ False
+result = True ^ False
 if 0:
   <a />

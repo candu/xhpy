@@ -2,5 +2,4 @@ class :foo(object):
   bar = None
   etc = 1
 :foo.bar = 2
-print :foo.etc
-print :foo.bar
+result = {'etc': :foo.etc, 'bar': :foo.bar}

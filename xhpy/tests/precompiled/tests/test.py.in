@@ -1,5 +1,5 @@
-from pylib.core import *
-from pylib.html import *
+from xhpy_precompiled.pylib.core import *
+from xhpy_precompiled.pylib.html import *
 
 class :ui:foo(:x:element):
   attribute list bar
