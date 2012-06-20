@@ -1,10 +1,42 @@
-#!/bin/bash
-#
-# These are manual tests, essentially; all you want is to verify that it
-# outputs something reasonable.
-#
-#
-MYDIR=$(dirname $0)
-for FILE in $MYDIR/*.py; do
-  python $MYDIR/../../parser.py < "$FILE"
-done
+#!/usr/bin/env python
+
+import os.path
+from subprocess import Popen, PIPE
+import unittest
+
+class XHPyParserTests(unittest.TestCase):
+  pass
+
+# We dynamically generate tests based on the files in this directory.
+# TODO: fix directory-dependent nonsense
+for filename in os.listdir('.'):
+  if not filename.endswith('.py'):
+    continue
+  def _test(name):
+    def _test_helper(self):
+      p = Popen(['python', '../../parser.py'], stdin=PIPE, stdout=PIPE, stderr=PIPE)
+      with open(name + '.py') as f:
+        stdout, stderr = p.communicate(input=f.read())
+      if name.startswith('fail_'):
+        self.assertNotEqual(0, p.returncode)
+      else:
+        self.assertEqual(0, p.returncode)
+    return _test_helper
+  testname = filename[:-3]
+  setattr(XHPyParserTests, 'test_{0}'.format(testname), _test(testname))
+
+if __name__ == '__main__':
+  import sys
+  print """\
+Running tests with environment:
+
+Python
+========
+{0}
+
+Platform
+========
+{1}
+
+""".format(sys.version, sys.platform)
+  unittest.main()
