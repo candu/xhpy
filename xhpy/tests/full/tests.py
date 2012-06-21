@@ -143,17 +143,4 @@ class XHPyFullTests(unittest.TestCase):
     self.assertEqual('pass', xhpy_function_param.result)
 
 if __name__ == '__main__':
-  import sys
-  print """\
-Running tests with environment:
-
-Python
-========
-{0}
-
-Platform
-========
-{1}
-
-""".format(sys.version, sys.platform)
   unittest.main()

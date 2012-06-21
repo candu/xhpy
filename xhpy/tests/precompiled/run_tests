@@ -1,8 +1,0 @@
-#!/bin/bash
-
-MYDIR=$(dirname $0)
-$MYDIR/setup_tests
-for FILE in $MYDIR/*.py; do
-  python "$FILE"
-done
-$MYDIR/cleanup_tests
