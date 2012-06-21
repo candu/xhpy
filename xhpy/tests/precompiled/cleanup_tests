@@ -2,3 +2,7 @@
 
 cd $(dirname $0)
 rm -rv xhpy_precompiled
+for f in tests/*.py.in; do
+  TESTNAME=$(basename $f)
+  rm -v ${TESTNAME%%.in}
+done

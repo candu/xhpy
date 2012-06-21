@@ -4,6 +4,19 @@ from xhpy.init import register_xhpy_module
 
 import unittest
 
+# HACK: for Python < 2.7, monkey-patch unittest to include a stub
+# implementation of unittest.skip().
+try:
+    unittest.skip
+except AttributeError:
+    def _unittest_skip(msg):
+        def wrap(func):
+            def wrapped_func(*args):
+                pass
+            return wrapped_func
+        return wrap
+    unittest.skip = _unittest_skip
+
 class XHPyFullTests(unittest.TestCase):
   def test_array_constant(self):
     register_xhpy_module('array_constant')
