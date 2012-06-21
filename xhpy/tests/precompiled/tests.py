@@ -25,8 +25,8 @@ for filename in os.listdir(os.path.dirname(__file__)):
   def _test(filename):
     def _test_helper(self):
       py_path = '{0}/{1}'.format(os.path.dirname(__file__), filename)
-      p = Popen(['python', py_path])
-      p.communicate()
+      p = Popen(['python', py_path], stdout=PIPE, stderr=PIPE)
+      stdout, stderr = p.communicate()
       if filename.startswith('fail_'):
         self.assertNotEqual(0, p.returncode)
       else:

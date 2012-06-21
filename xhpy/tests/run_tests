@@ -1,5 +1,23 @@
 #!/bin/bash
-endtoend/tests.py
-full/tests.py
-parser/tests.py
-precompiled/tests.py
+TEST_ROOT=$(dirname $0)
+echo "Running end-to-end tests..."
+$TEST_ROOT/endtoend/tests.py
+if [ $? -gt 0 ]; then
+  exit 1
+fi
+echo "Running full register/import tests..."
+$TEST_ROOT/full/tests.py
+if [ $? -gt 0 ]; then
+  exit 1
+fi
+echo "Running parser tests...."
+$TEST_ROOT/parser/tests.py
+if [ $? -gt 0 ]; then
+  exit 1
+fi
+echo "Running precompiled pylib tests..."
+$TEST_ROOT/precompiled/tests.py
+if [ $? -gt 0 ]; then
+  exit 1
+fi
+exit 0
